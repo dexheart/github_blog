@@ -1,8 +1,19 @@
-import 'styled-components'
-import { defaultTheme } from '../styles/themes/default'
+import { createGlobalStyle } from 'styled-components'
 
-type ThemeType = typeof defaultTheme
+export const GlobalStyle = createGlobalStyle`
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
 
-declare module 'styled-components' {
-  export interface DefaultTheme extends ThemeType {}
-}
+    body {
+        background-color: ${(props) => props.theme['base-background']};
+        color: ${(props) => props.theme['base-title']};
+        -webkit-font-smoothing: antialiased;
+    }
+
+    body, input, textarea, button {
+        font: 400 1rem Nunito, sans-serif;
+    }
+`
