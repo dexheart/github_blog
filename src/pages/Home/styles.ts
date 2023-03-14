@@ -110,3 +110,63 @@ export const OtherInfo = styled.div`
     gap: 0.5rem;
   }
 `
+export const FormContainer = styled.div`
+  width: 54rem;
+
+  .publishInfo {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin: 4.5rem 0 0.75rem;
+
+    h3 {
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 1.125rem;
+      line-height: 160%;
+
+      color: ${(props) => props.theme['base-subtitle']};
+    }
+
+    > span {
+      /* Text/Text S */
+
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 160%;
+
+      text-align: right;
+
+      color: ${(props) => props.theme['base-span']};
+    }
+  }
+
+  .formSearch {
+    input {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      padding: 0.75rem 1rem;
+      gap: 0.5rem;
+
+      width: 54rem;
+      height: 3.125rem;
+
+      /* Base/Input */
+
+      background: ${(props) => props.theme['base-input']};
+
+      /* Base/Border */
+
+      border: 1px solid ${(props) => props.theme['base-border']};
+      border-radius: 6px;
+
+      color: ${(props) => props.theme['base-text']};
+    }
+  }
+`
+
+export const PublishContainer = styled.div``
