@@ -51,24 +51,28 @@ export const MainInfoProfile = styled.div`
     justify-content: space-between;
 
     .github {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      padding: 0px;
-      gap: 0.25rem;
+      a {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        padding: 0px;
+        gap: 0.25rem;
 
-      margin-top: -0.5rem;
+        margin-top: -0.5rem;
+        text-decoration: none;
+        cursor: pointer;
 
-      span {
-        font-family: 'Nunito';
-        font-style: normal;
-        font-weight: 700;
-        font-size: 0.75rem;
-        line-height: 160%;
+        > span {
+          font-family: 'Nunito';
+          font-style: normal;
+          font-weight: 700;
+          font-size: 0.75rem;
+          line-height: 160%;
 
-        text-transform: uppercase;
+          text-transform: uppercase;
 
-        color: ${(props) => props.theme.blue};
+          color: ${(props) => props.theme.blue};
+        }
       }
     }
 
@@ -169,4 +173,67 @@ export const FormContainer = styled.div`
   }
 `
 
-export const PublishContainer = styled.div``
+export const PublishContainer = styled.div`
+  margin-top: 3rem;
+
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2rem;
+`
+
+export const OneOfPublishBox = styled.div`
+  width: 26rem;
+  height: 16.25rem;
+
+  background: ${(props) => props.theme['base-post']};
+  border-radius: 10px;
+  padding: 2rem;
+
+  .titleBox {
+    display: flex;
+    justify-content: space-between;
+
+    margin-bottom: 1.25rem;
+
+    > span {
+      /* Text/Text S */
+
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 400;
+      font-size: 0.875rem;
+      line-height: 160%;
+      /* or 22px */
+
+      /* Base/Span */
+
+      color: ${(props) => props.theme['base-span']};
+    }
+
+    > h4 {
+      width: 17rem;
+
+      font-family: 'Nunito';
+      font-style: normal;
+      font-weight: 700;
+      font-size: 1.25rem;
+      line-height: 160%;
+      /* or 32px */
+
+      /* Base/Title */
+
+      color: ${(props) => props.theme['base-title']};
+    }
+  }
+
+  .textBox {
+    height: 7rem;
+    width: 22rem;
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll;
+  }
+  .textBox::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
+  }
+`
