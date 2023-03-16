@@ -16,9 +16,12 @@ export const ImageContainer = styled.div`
   > img {
     height: 9.25rem;
     width: 9.25rem;
+    border-radius: 8px;
   }
 `
 export const MainInfoProfile = styled.div`
+  width: 40rem;
+
   > h2 {
     margin-top: 0.5rem;
 
@@ -31,9 +34,13 @@ export const MainInfoProfile = styled.div`
     color: ${(props) => props.theme['base-title']};
   }
 
-  .description {
+  .bio {
     height: 4.25rem;
     margin-top: 0.5rem;
+
+    -ms-overflow-style: none; /* for Internet Explorer, Edge */
+    scrollbar-width: none; /* for Firefox */
+    overflow-y: scroll;
 
     span {
       font-family: 'Nunito';
@@ -44,6 +51,10 @@ export const MainInfoProfile = styled.div`
 
       color: ${(props) => props.theme['base-text']};
     }
+  }
+
+  .bio::-webkit-scrollbar {
+    display: none; /* for Chrome, Safari, and Opera */
   }
 
   .wrapper {
@@ -192,7 +203,6 @@ export const OneOfPublishBox = styled.div`
   .titleBox {
     display: flex;
     justify-content: space-between;
-
     margin-bottom: 1.25rem;
 
     > span {
@@ -211,7 +221,12 @@ export const OneOfPublishBox = styled.div`
     }
 
     > h4 {
-      width: 17rem;
+      width: 13rem;
+      height: 4rem;
+
+      -ms-overflow-style: none; /* for Internet Explorer, Edge */
+      scrollbar-width: none; /* for Firefox */
+      overflow-y: scroll;
 
       font-family: 'Nunito';
       font-style: normal;
@@ -223,6 +238,10 @@ export const OneOfPublishBox = styled.div`
       /* Base/Title */
 
       color: ${(props) => props.theme['base-title']};
+    }
+
+    > h4::-webkit-scrollbar {
+      display: none; /* for Chrome, Safari, and Opera */
     }
   }
 

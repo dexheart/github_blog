@@ -14,7 +14,8 @@ import usergroupIcon from '../../assets/allIcons/user-group.svg'
 import arrowIcon from '../../assets/allIcons/arrow.svg'
 import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
-import { useForm } from 'react-hook-form'
+import { formatDistanceToNow } from 'date-fns'
+import ptBR from 'date-fns/locale/pt-BR'
 
 interface UserDataProps {
   login: string
@@ -26,17 +27,39 @@ interface UserDataProps {
   url: string
 }
 
+interface UserIssueProps {
+  title: string
+  created_at: string
+  body: string
+  number: number
+}
+
+interface IssuesResponse {
+  items: UserIssueProps[]
+}
+
 export function Home() {
   const [userData, setUserData] = useState<UserDataProps>({} as UserDataProps)
 
-  const { register, watch } = useForm()
+  const [userIssueList, setUserIssueList] = useState<UserIssueProps[]>([])
+  const [filteredIssuesList, setFilteredIssuesList] = useState<
+    UserIssueProps[]
+  >([])
 
-  const searchField = watch('query')
+  console.log(userIssueList)
 
-  console.log(searchField)
+  function handleFilteredList(filter: string) {
+    console.log(filter)
+    const filteredList = userIssueList.filter(
+      (issue) =>
+        issue.title.toLowerCase().includes(filter.toLowerCase()) ||
+        issue.body.toLocaleLowerCase().includes(filter.toLowerCase()),
+    )
+    setFilteredIssuesList(filteredList)
+  }
 
   async function loadProfile() {
-    const response = await api.get('diego3g')
+    const response = await api.get('users/dexheart')
 
     const profile: UserDataProps = {
       login: response.data.login,
@@ -51,8 +74,25 @@ export function Home() {
     setUserData(profile)
   }
 
+  async function loadIssueList() {
+    const issuesResponse = await api.get<IssuesResponse>(
+      'search/issues?q=repo:dexheart/github_blog',
+    )
+    const issues = issuesResponse.data.items
+    const sanitizedIssues = issues.map((issue) => ({
+      body: issue.body,
+      created_at: issue.created_at,
+      title: issue.title,
+      number: issue.number,
+    }))
+
+    setUserIssueList(sanitizedIssues)
+    setFilteredIssuesList(sanitizedIssues)
+  }
+
   useEffect(() => {
     loadProfile()
+    loadIssueList()
   }, [])
 
   return (
@@ -73,7 +113,7 @@ export function Home() {
             </div>
           </div>
 
-          <div className="description">
+          <div className="bio">
             <span>{userData.bio}</span>
           </div>
 
@@ -103,7 +143,11 @@ export function Home() {
       <FormContainer>
         <div className="publishInfo">
           <h3>Publicações</h3>
-          <span>6 Publicações</span>
+          <span>
+            {filteredIssuesList.length > 1 && filteredIssuesList.length !== 0
+              ? filteredIssuesList.length + ' publicações'
+              : filteredIssuesList.length + ' publicação'}
+          </span>
         </div>
 
         <div className="formSearch">
@@ -111,102 +155,29 @@ export function Home() {
             <input
               type="text"
               placeholder="Buscar conteúdo"
-              {...register('query')}
+              onChange={(e) => handleFilteredList(e.target.value)}
             />
           </form>
         </div>
       </FormContainer>
 
       <PublishContainer>
-        <OneOfPublishBox>
-          <div className="titleBox">
-            <h4>JavaScript data types and data structures</h4>
-            <span>Há 1 dia</span>
-          </div>
-
-          <div className="textBox">
-            <p>
-              Programming languages all have built-in data structures, but these
-              often differ from one language to another. This article attempts
-              to list the built-in data structures available in JavaScript and
-              what properties they have. These can be used to build other data
-              structures. Wherever possible, comparisons with other languages
-              are drawn.
-            </p>
-          </div>
-        </OneOfPublishBox>
-
-        <OneOfPublishBox>
-          <div className="titleBox">
-            <h4>JavaScript data types and data structures</h4>
-            <span>Há 1 dia</span>
-          </div>
-
-          <div className="textBox">
-            <p>
-              Programming languages all have built-in data structures, but these
-              often differ from one language to another. This article attempts
-              to list the built-in data structures available in JavaScript and
-              what properties they have. These can be used to build other data
-              structures. Wherever possible, comparisons with other languages
-              are drawn.
-            </p>
-          </div>
-        </OneOfPublishBox>
-
-        <OneOfPublishBox>
-          <div className="titleBox">
-            <h4>JavaScript data types and data structures</h4>
-            <span>Há 1 dia</span>
-          </div>
-
-          <div className="textBox">
-            <p>
-              Programming languages all have built-in data structures, but these
-              often differ from one language to another. This article attempts
-              to list the built-in data structures available in JavaScript and
-              what properties they have. These can be used to build other data
-              structures. Wherever possible, comparisons with other languages
-              are drawn.
-            </p>
-          </div>
-        </OneOfPublishBox>
-
-        <OneOfPublishBox>
-          <div className="titleBox">
-            <h4>JavaScript data types and data structures</h4>
-            <span>Há 1 dia</span>
-          </div>
-
-          <div className="textBox">
-            <p>
-              Programming languages all have built-in data structures, but these
-              often differ from one language to another. This article attempts
-              to list the built-in data structures available in JavaScript and
-              what properties they have. These can be used to build other data
-              structures. Wherever possible, comparisons with other languages
-              are drawn.
-            </p>
-          </div>
-        </OneOfPublishBox>
-
-        <OneOfPublishBox>
-          <div className="titleBox">
-            <h4>JavaScript data types and data structures</h4>
-            <span>Há 1 dia</span>
-          </div>
-
-          <div className="textBox">
-            <p>
-              Programming languages all have built-in data structures, but these
-              often differ from one language to another. This article attempts
-              to list the built-in data structures available in JavaScript and
-              what properties they have. These can be used to build other data
-              structures. Wherever possible, comparisons with other languages
-              are drawn.
-            </p>
-          </div>
-        </OneOfPublishBox>
+        {filteredIssuesList.map((issue) => (
+          <OneOfPublishBox key={issue.number}>
+            <div className="titleBox">
+              <h4>{issue.title}</h4>
+              <span>
+                {formatDistanceToNow(new Date(issue.created_at), {
+                  addSuffix: true,
+                  locale: ptBR,
+                })}
+              </span>
+            </div>
+            <div className="textBox">
+              <p>{issue.body}</p>
+            </div>
+          </OneOfPublishBox>
+        ))}
       </PublishContainer>
     </div>
   )
