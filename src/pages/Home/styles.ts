@@ -190,6 +190,11 @@ export const PublishContainer = styled.div`
   display: flex;
   flex-wrap: wrap;
   gap: 2rem;
+
+  > a {
+    text-decoration: none;
+    color: inherit;
+  }
 `
 
 export const OneOfPublishBox = styled.div`
@@ -199,6 +204,8 @@ export const OneOfPublishBox = styled.div`
   background: ${(props) => props.theme['base-post']};
   border-radius: 10px;
   padding: 2rem;
+
+  cursor: pointer;
 
   .titleBox {
     display: flex;

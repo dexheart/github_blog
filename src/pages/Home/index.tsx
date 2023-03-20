@@ -12,10 +12,12 @@ import githubIcon from '../../assets/allIcons/github.svg'
 import buildingIcon from '../../assets/allIcons/building.svg'
 import usergroupIcon from '../../assets/allIcons/user-group.svg'
 import arrowIcon from '../../assets/allIcons/arrow.svg'
+
 import { useEffect, useState } from 'react'
 import { api } from '../../lib/axios'
 import { formatDistanceToNow } from 'date-fns'
 import ptBR from 'date-fns/locale/pt-BR'
+import { NavLink } from 'react-router-dom'
 
 interface UserDataProps {
   login: string
@@ -42,9 +44,9 @@ export function Home() {
   const [userData, setUserData] = useState<UserDataProps>({} as UserDataProps)
 
   const [userIssueList, setUserIssueList] = useState<UserIssueProps[]>([])
-  const [filteredIssuesList, setFilteredIssuesList] = useState<
-    UserIssueProps[]
-  >([])
+  const [filteredIssueList, setFilteredIssueList] = useState<UserIssueProps[]>(
+    [],
+  )
 
   console.log(userIssueList)
 
@@ -53,9 +55,9 @@ export function Home() {
     const filteredList = userIssueList.filter(
       (issue) =>
         issue.title.toLowerCase().includes(filter.toLowerCase()) ||
-        issue.body.toLocaleLowerCase().includes(filter.toLowerCase()),
+        issue.body.toLowerCase().includes(filter.toLowerCase()),
     )
-    setFilteredIssuesList(filteredList)
+    setFilteredIssueList(filteredList)
   }
 
   async function loadProfile() {
@@ -87,7 +89,7 @@ export function Home() {
     }))
 
     setUserIssueList(sanitizedIssues)
-    setFilteredIssuesList(sanitizedIssues)
+    setFilteredIssueList(sanitizedIssues)
   }
 
   useEffect(() => {
@@ -144,9 +146,9 @@ export function Home() {
         <div className="publishInfo">
           <h3>Publicações</h3>
           <span>
-            {filteredIssuesList.length > 1 && filteredIssuesList.length !== 0
-              ? filteredIssuesList.length + ' publicações'
-              : filteredIssuesList.length + ' publicação'}
+            {filteredIssueList.length > 1 && filteredIssueList.length !== 0
+              ? filteredIssueList.length + ' publicações'
+              : filteredIssueList.length + ' publicação'}
           </span>
         </div>
 
@@ -162,21 +164,23 @@ export function Home() {
       </FormContainer>
 
       <PublishContainer>
-        {filteredIssuesList.map((issue) => (
-          <OneOfPublishBox key={issue.number}>
-            <div className="titleBox">
-              <h4>{issue.title}</h4>
-              <span>
-                {formatDistanceToNow(new Date(issue.created_at), {
-                  addSuffix: true,
-                  locale: ptBR,
-                })}
-              </span>
-            </div>
-            <div className="textBox">
-              <p>{issue.body}</p>
-            </div>
-          </OneOfPublishBox>
+        {filteredIssueList.map((issue) => (
+          <NavLink key={issue.number} to={'/issue/' + issue.number}>
+            <OneOfPublishBox>
+              <div className="titleBox">
+                <h4>{issue.title}</h4>
+                <span>
+                  {formatDistanceToNow(new Date(issue.created_at), {
+                    addSuffix: true,
+                    locale: ptBR,
+                  })}
+                </span>
+              </div>
+              <div className="textBox">
+                <p>{issue.body}</p>
+              </div>
+            </OneOfPublishBox>
+          </NavLink>
         ))}
       </PublishContainer>
     </div>
